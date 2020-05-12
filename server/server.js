@@ -1,54 +1,24 @@
 //requires
-require('./config/config');
+require('./config/config');//Aqui se encuentra la configuración de la aplicación
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 
 const bodyParser = require('body-parser');
 // para procesar peticiones /x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // para procesar peticiones /json
 app.use(bodyParser.json())
 
-/*app.get('/', function (req, res) {
-  res.json('Hello World');
-});*/
+// Importamos el archivo de rutas server/routes/usuario.js
+app.use(require('./routes/usuario'));
 
-app.get('/usuario', function (req, res) {
-  res.json('get usuario');
-});
-
-app.post('/usuario', function (req, res) {
-
-  let body = req.body;
-
-  //si no recibo el nombre
-  //envío un status 400 (Bad Request )
-  if (body.nombre===undefined) {
-      res.status(400).json({
-          ok : false,
-          mensaje : 'El nombre es necesario'
-      });
-  } else {
-      res.json({
-          persona: body
-      });
-  }
-
-
-});
-
-// /:id para pasar un parametro por la url
-app.put('/usuario/:id', function (req, res) {
-  let id = req.params.id//para obtener el parametro que pasamos por la url
-  res.json({
-      id
-  });
-});
-
-app.delete('/usuario', function (req, res) {
-  res.json('delete usuario');
-});
+//Conectando a MongoDB
+mongoose.connect(process.env.URLDB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).catch(error => handleError(error));
 
 //de la variable global process.env.PORT leemos el puerto
 //ella se encuentra en server/config/config.js
