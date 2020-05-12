@@ -11,7 +11,7 @@ let urlDB;
 if (process.env.NODE_ENV==='dev') {
     urlDB='mongodb://localhost:27017/cafe';
 } else {
-    urlDB='mongodb+srv://castroh:GC1xe2A6vNg9rPcS@cluster0-oqqgl.mongodb.net/cafe?retryWrites=true&w=majority';
+    urlDB=process.env.MONGO_URI;//process.env.MONGO_URI variable de entorno personalizadas Heroku para laurl de conexión de producción
 }
 
 //guardamos la cadena de conexión de la base de datos
