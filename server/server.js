@@ -11,8 +11,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // para procesar peticiones /json
 app.use(bodyParser.json())
 
-// Importamos el archivo de rutas server/routes/usuario.js
-app.use(require('./routes/usuario'));
+// Importamos los archivos de rutas server/routes/usuario.js y server/routes/login.js
+//app.use(require('./routes/usuario'));
+//app.use(require('./routes/login'));
+
+//En este archivo se importan todas las rutas server/routes/index.js
+app.use(require('./routes/index'));
 
 //Conectando a MongoDB
 mongoose.connect(process.env.URLDB, {

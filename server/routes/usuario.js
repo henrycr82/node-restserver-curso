@@ -3,13 +3,24 @@ const express = require('express');
 const Usuario = require('../models/usuario');//Modelo Usuario
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
+//importamos por destruccturing
+const { verificarToken, verificarAdminRole } = require('../middlewares/autenticacion');
 const app = express();
 /*app.get('/', function (req, res) {
   res.json('Hello World');
 });*/
 
-app.get('/usuario', function (req, res) {
+//LISTAR USUARIOS
+//usamos el Middleware verificarToken para validar el TOKEN de seguridad
+app.get('/usuario', verificarToken, (req, res) => {
     //res.json('get usuario');
+
+    //información del PAYLOAD del TOKEN
+    /*return res.json({
+        usuario : req.usuario,
+        nombre : req.usuario.nombre,
+        email : req.usuario.email
+    });*/
 
     //si no llega el parametro desde asumo que mostrare todos los registros
     let desde = req.query.desde || 0;
@@ -50,7 +61,17 @@ app.get('/usuario', function (req, res) {
         });
 });
 
-app.post('/usuario', function (req, res) {
+//GUARDAR
+//Arreglo de Middlewares [verificarToken, verificarAdminRole]
+app.post('/usuario', [verificarToken, verificarAdminRole], (req, res) => {
+
+    //información del PAYLOAD del TOKEN
+    /*return res.json({
+        usuario : req.usuario,
+        nombre : req.usuario.nombre,
+        email : req.usuario.email
+    });*/
+
 
     let body = req.body;
 
@@ -99,8 +120,17 @@ app.post('/usuario', function (req, res) {
 
 });
 
+//ACTUALIZAR
 // /:id para pasar un parametro por la url
-app.put('/usuario/:id', function (req, res) {
+app.put('/usuario/:id', [verificarToken, verificarAdminRole], (req, res) => {
+
+    //información del PAYLOAD del TOKEN
+    /*return res.json({
+        usuario : req.usuario,
+        nombre : req.usuario.nombre,
+        email : req.usuario.email
+    });*/
+
     let id = req.params.id;//para obtener el parametro que pasamos por la url
     //para filtrar los campos que puedo actualizar que me llegan por el boby
     //los filtro con la libreria underscore
@@ -130,7 +160,17 @@ app.put('/usuario/:id', function (req, res) {
     });
 });
 
-app.delete('/usuario/:id', function (req, res) {
+
+//ELIMINAR
+app.delete('/usuario/:id', [verificarToken, verificarAdminRole], (req, res) => {
+
+    //información del PAYLOAD del TOKEN
+    /*return res.json({
+        usuario : req.usuario,
+        nombre : req.usuario.nombre,
+        email : req.usuario.email
+    });*/
+
     //res.json('delete usuario');
     let id = req.params.id;//para obtener el parametro que pasamos por la url
 
