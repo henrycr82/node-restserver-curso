@@ -23,3 +23,7 @@ if (process.env.NODE_ENV==='dev') {
 
 //guardamos la cadena de conexión de la base de datos
 process.env.URLDB = urlDB;
+
+//Google Client ID
+process.env.CLIENT_ID = process.env.CLIENT_ID  || '885503305057-l31a0imro6v3tktuhfgep60kglv9elv8.apps.googleusercontent.com';
+
